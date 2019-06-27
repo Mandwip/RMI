@@ -1,0 +1,24 @@
+import java.net.*;
+import java.io.*;
+public class UDPSender2 {
+public static void main(String[] args) throws IOException {
+DatagramSocket send = new DatagramSocket(10010,InetAddress.getByName("127.0.0.1"));
+
+File f2 = new File("/home/mandwip/assignment/123.mp4");
+FileInputStream bis = new FileInputStream(f2);
+byte[] buf = new byte[63*1024];
+int len;
+
+DatagramPacket pkg = new DatagramPacket(buf, buf.length,InetAddress.getByName("127.0.0.1"),10000);
+while((len=bis.read(buf))!=-1)
+{
+send.send(pkg);
+}
+buf = "end".getBytes();
+DatagramPacket endpkg = new DatagramPacket(buf, buf.length,InetAddress.getByName("127.0.0.1"),10000);
+System.out.println("Send the file.");
+send.send(endpkg);
+bis.close();
+send.close();
+}
+}

@@ -1,0 +1,32 @@
+import java.net.*;
+import java.io.*;
+
+public class UDPReceiver {
+
+public static void main(String[] args) throws IOException {
+DatagramSocket dsoc = new DatagramSocket(10000);
+
+File f1 = new File("/home/mandwip/assignment/1234.mp4");
+//f1.createNewFile();
+FileOutputStream bos = new FileOutputStream(f1);
+byte[] buf = new byte[63*1024];
+DatagramPacket pkg = new DatagramPacket(buf, buf.length);
+
+while(true)
+{
+dsoc.receive(pkg);
+if (new String(pkg.getData(), 0, pkg.getLength()).equals("end")) 
+{ 
+System.out.println("Documents received");
+bos.close();
+dsoc.close();
+break;
+}
+bos.write(pkg.getData(), 0, pkg.getLength());
+bos.flush(); 
+}
+bos.close();
+dsoc.close();
+}
+}
+
